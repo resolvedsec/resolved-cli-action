@@ -1,0 +1,69 @@
+name: "Resolved Security CLI Action"
+author: "Resolved Security"
+description: "Scan your project for vulnerabilitie and potential fixes"
+
+branding:
+  icon: "check-square"
+  color: "blue"
+
+inputs:
+  project_directory:
+    description: "Path to the project directory"
+    default: "./"
+  ecosystem:
+    description: "Ecosytem of the project [npm | pnpm | yarn | bower | pypi | poetry | maven | gradle | sbt | dep | nuget]"
+    required: true
+  resolved_user:
+    required: true
+    description: "User name, provided by Resolved Security. Mandatory."
+  resolved_token:
+    required: true
+    description: "Authentication token, provided by Resolved Security. Mandatory."
+  resolved_token_base64:
+    required: true
+    description: "Authentication token ** in base 64 ** , provided by Resolved Security. Mandatory."
+
+runs:
+  using: "composite"
+  steps:
+  - uses: actions/setup-python@v5
+    with:
+      python-version: 'pypy3.10'
+
+  - name: "Validate Runner OS"
+    shell: bash
+    if: runner.os != 'Linux'
+    run: |
+      echo "::error title=⛔ error hint:Unsupported runner OS: ${{ runner.os }}. Only Linux runner is supported"
+      exit 1
+
+  - name: "Validate Ecosystem"
+    shell: bash
+    if: ${{ inputs.ecosystem != 'npm' }}
+    run: |
+      echo "::error title=⛔ error hint:Unsupported ecosystem ${{ inputs.ecosystem }}"
+      exit 1
+
+  - name: "Validate Authentication Parameters"
+    shell: bash
+    if: ${{ inputs.resolved_user == '' || inputs.resolved_token == '' || inputs.resolved_token_base64 == ''}}
+    run: |
+      echo "::error title=⛔ error hint:Missing authentication parameters"
+      exit 1
+
+  - name: "Install Resolved Security CLI"
+    shell: bash
+    run: |
+      pip install --upgrade --extra-index-url https://$RESOLVED_USER:$RESOLVED_TOKEN@registry.resolvedsecurity.com/pypi/Resolved_Security/simple resolved-cli
+    env:
+      RESOLVED_USER: ${{ inputs.resolved_user }}
+      RESOLVED_TOKEN: ${{ inputs.resolved_token }}
+
+  - name: "Run Resolved Security CLI"
+    shell: bash
+    run: |
+      resolved-cli -i -e ${{ inputs.ecosystem }} -D ${{ inputs.project_directory }}
+    env:
+      RESOLVED_USER: ${{ inputs.resolved_user }}
+      RESOLVED_TOKEN: ${{ inputs.resolved_token }}
+      RESOLVED_TOKEN_BASE64: ${{ inputs.resolved_token_base64 }}
