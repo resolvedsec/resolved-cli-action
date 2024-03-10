@@ -23,10 +23,10 @@ If you want to learn more, contact us at <info@resolvedsecurity.com>.
 1. Create a Resolved Security account
   If you do not already have an account, please contact us at <sales@resolvedsecurity.com>
 2. Obtain user credentials
-3. Configure required [secrets and variables](#inputs-inputs)
-4. Add the action to your [project's workflow](#using-the-resolved-security-github-action-in-your-workflow-workflow_configuration)
+3. Configure required [secrets and variables](#inputs)
+4. Add the action to your [project's workflow](#using-the-resolved-security-github-action-in-your-workflow)
 
-#### Using the Resolved Security GitHub Action In Your Workflow {#workflow_configuration}
+#### Using the Resolved Security GitHub Action In Your Workflow
 
 Here is a sample workflow using the Resolved Security GitHub action:
 
@@ -60,7 +60,7 @@ jobs:
       run: npm install
 ```
 
-### Inputs {#inputs}
+### Inputs
 
 It is recommended to use repository level [secrets and variables](https://docs.github.com/en/actions/learn-github-actions/variables) to manage action configuration.
 
