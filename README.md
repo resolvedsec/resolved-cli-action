@@ -50,7 +50,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Run Resolved Security Action
-      uses: resolvedsec/resolved-cli-action@v0.1
+      uses: resolvedsec/resolved-cli-action@0.1
       with:
         ecosystem: ${{ vars.ECOSYSTEM }}
         resolved_user: ${{ secrets.RESOLVED_USER }}
