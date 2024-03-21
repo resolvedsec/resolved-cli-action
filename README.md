@@ -24,7 +24,8 @@ If you want to learn more, contact us at <info@resolvedsecurity.com>.
   If you do not already have an account, please contact us at <sales@resolvedsecurity.com>
 2. Obtain user credentials
 3. Configure required [secrets and variables](#inputs)
-4. Add the action to your [project's workflow](#using-the-resolved-security-github-action-in-your-workflow)
+4. For NPM projects, run npm install before calling CLI action
+5. Add the action to your [project's workflow](#using-the-resolved-security-github-action-in-your-workflow)
 
 #### Using the Resolved Security GitHub Action In Your Workflow
 
@@ -49,14 +50,16 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Run npm install
+      run: npm install
     - name: Run Resolved Security Action
-      uses: resolvedsec/resolved-cli-action@0.1
+      uses: resolvedsec/resolved-cli-action@main
       with:
         ecosystem: ${{ vars.ECOSYSTEM }}
         resolved_user: ${{ secrets.RESOLVED_USER }}
         resolved_token: ${{ secrets.RESOLVED_TOKEN }}
         resolved_token_base64: ${{ secrets.RESOLVED_TOKEN_BASE64 }}
-    - name: Run NPM Install
+    - name: Run npm Install
       run: npm install
 ```
 
