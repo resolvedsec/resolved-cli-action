@@ -64,7 +64,7 @@ runs:
     run: |
       pwd
       ls -a
-      resolved-cli -i -e ${{ inputs.ecosystem }} -D ${{ inputs.project_directory }}
+      resolved-cli -e ${{ inputs.ecosystem }} -D ${{ inputs.project_directory }}
     env:
       RESOLVED_USER: ${{ inputs.resolved_user }}
       RESOLVED_TOKEN: ${{ inputs.resolved_token }}
