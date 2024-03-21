@@ -62,6 +62,8 @@ runs:
   - name: "Run Resolved Security CLI"
     shell: bash
     run: |
+      pwd
+      ls -a
       resolved-cli -i -e ${{ inputs.ecosystem }} -D ${{ inputs.project_directory }}
     env:
       RESOLVED_USER: ${{ inputs.resolved_user }}
