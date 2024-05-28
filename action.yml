@@ -54,7 +54,8 @@ runs:
   - name: "Install Resolved Security CLI"
     shell: bash
     run: |
-      pip install --upgrade --extra-index-url https://$RESOLVED_USER:$RESOLVED_TOKEN@registry.resolvedsecurity.com/pypi/Resolved_Security/simple resolved-cli
+      curl "https://${RESOLVED_USER}:${RESOLVED_TOKEN}@registry.resolvedsecurity.com/resolved-cli?get=install" -sSfL | sh
+      echo "$HOME/.local/bin/resolved" >> $GITHUB_PATH
     env:
       RESOLVED_USER: ${{ inputs.resolved_user }}
       RESOLVED_TOKEN: ${{ inputs.resolved_token }}
