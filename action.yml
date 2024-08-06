@@ -37,20 +37,6 @@ runs:
       echo "::error title=⛔ error hint:Unsupported runner OS: ${{ runner.os }}. Only Linux runner is supported"
       exit 1
 
-  - name: "Validate Ecosystem"
-    shell: bash
-      run: |
-        if [ -n "${{ inputs.ecosystem }}" ]; then
-          case "${{ inputs.ecosystem }}" in
-            npm|yarn|pypi|maven|gradle)
-              ;;
-            *)
-              echo "::error title=⛔ error hint:Unsupported ecosystem ${{ inputs.ecosystem }}"
-              exit 1
-              ;;
-          esac
-        fi
-
   - name: "Validate Authentication Parameters"
     shell: bash
     if: ${{ inputs.resolved_user == '' || inputs.resolved_token == '' || inputs.resolved_token_base64 == ''}}
