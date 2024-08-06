@@ -69,9 +69,9 @@ It is recommended to use repository level [secrets and variables](https://docs.g
 
 #### `ecosystem`
 
-Description: Configures the ecosystem of your project. For example: 'npm', 'pypi', 'maven'.
+Description: Configures the ecosystem of your project. For example: 'npm', 'yarn', 'pypi', 'maven', 'gradle'.
 Default: None
-Required: Yes
+Required: No
 
 ```yaml
 with:
