@@ -11,8 +11,8 @@ inputs:
     description: "Path to the project directory"
     default: "./"
   ecosystem:
-    description: "Ecosytem of the project [npm | pnpm | yarn | bower | pypi | poetry | maven | gradle | sbt | dep | nuget]"
-    required: true
+    description: "Ecosytem of the project [npm | yarn | pypi | maven | gradle]"
+    required: false
   resolved_user:
     required: true
     description: "User name, provided by Resolved Security. Mandatory."
@@ -39,10 +39,17 @@ runs:
 
   - name: "Validate Ecosystem"
     shell: bash
-    if: ${{ inputs.ecosystem != 'npm' }}
-    run: |
-      echo "::error title=⛔ error hint:Unsupported ecosystem ${{ inputs.ecosystem }}"
-      exit 1
+      run: |
+        if [ -n "${{ inputs.ecosystem }}" ]; then
+          case "${{ inputs.ecosystem }}" in
+            npm|yarn|pypi|maven|gradle)
+              ;;
+            *)
+              echo "::error title=⛔ error hint:Unsupported ecosystem ${{ inputs.ecosystem }}"
+              exit 1
+              ;;
+          esac
+        fi
 
   - name: "Validate Authentication Parameters"
     shell: bash
@@ -63,7 +70,11 @@ runs:
   - name: "Run Resolved Security CLI"
     shell: bash
     run: |
-      resolved-cli -e ${{ inputs.ecosystem }} -D ${{ inputs.project_directory }}
+      if [ -n "${{ inputs.ecosystem }}" ]; then
+        resolved-cli --scan -e ${{ inputs.ecosystem }} --dev -D ${{ inputs.project_directory }}
+      else
+        resolved-cli --scan --dev -D ${{ inputs.project_directory }}
+      fi
     env:
       RESOLVED_USER: ${{ inputs.resolved_user }}
       RESOLVED_TOKEN: ${{ inputs.resolved_token }}
